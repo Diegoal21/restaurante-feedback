@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useMemo, useState } from "react";
 import { CheckCircle2, Clipboard, Loader2, Star } from "lucide-react";
 
@@ -72,11 +73,18 @@ export default function SurveyForm({ initialTable }) {
   if (result) {
     return (
       <main className="survey-card success-card">
+        <Image
+          alt="Stromboli Trattoria"
+          className="card-logo"
+          height={960}
+          src="/stromboli-logo.jpg"
+          width={960}
+        />
         <CheckCircle2 className="success-icon" size={42} />
-        <p className="eyebrow">Gracias por tu opinión</p>
-        <h2>Tu promoción está lista</h2>
+        <p className="eyebrow">Grazie por tu opinion</p>
+        <h2>Tu promocion esta lista</h2>
         <p className="muted">
-          Presenta este folio en tu próxima visita. El restaurante lo marcará
+          Presenta este folio en tu proxima visita. El restaurante lo marcara
           como usado al aplicarlo.
         </p>
         <button className="coupon-code" onClick={copyCode} type="button">
@@ -96,8 +104,15 @@ export default function SurveyForm({ initialTable }) {
     <main className="survey-card">
       <div className="form-header">
         <div>
+          <Image
+            alt="Stromboli Trattoria"
+            className="card-logo"
+            height={960}
+            src="/stromboli-logo.jpg"
+            width={960}
+          />
           <p className="eyebrow">Toma menos de un minuto</p>
-          <h2>¿Cómo estuvo tu visita?</h2>
+          <h2>Como estuvo tu visita?</h2>
         </div>
         <div className="score-pill">
           <Star size={16} fill="currentColor" />
@@ -145,14 +160,14 @@ export default function SurveyForm({ initialTable }) {
           <textarea
             maxLength={600}
             onChange={(event) => setComment(event.target.value)}
-            placeholder="Cuéntanos qué hicimos bien o qué podemos mejorar."
+            placeholder="Cuentanos que hicimos bien o que podemos mejorar."
             rows={4}
             value={comment}
           />
         </label>
 
         <label className="field">
-          <span>Teléfono o email opcional</span>
+          <span>Telefono o email opcional</span>
           <input
             onChange={(event) => setContact(event.target.value)}
             placeholder="Solo si quieres que te contactemos"

@@ -1,16 +1,17 @@
 :root {
-  --background: #f7f4ee;
-  --foreground: #19201d;
-  --muted: #66706a;
+  --background: #f6f6f4;
+  --foreground: #4c4c4f;
+  --muted: #747477;
   --surface: #ffffff;
-  --line: #ded8cf;
-  --primary: #0f6b5c;
-  --primary-strong: #0a4c42;
-  --accent: #d95f32;
-  --accent-soft: #fff0e8;
-  --success: #1d7a45;
-  --danger: #b43232;
-  --shadow: 0 24px 70px rgba(24, 32, 29, 0.12);
+  --surface-soft: #fbfbfa;
+  --line: #dfdfdc;
+  --primary: #08733a;
+  --primary-strong: #055a2d;
+  --accent: #d91f2b;
+  --accent-soft: #fff0f1;
+  --success: #08733a;
+  --danger: #b51f28;
+  --shadow: 0 24px 70px rgba(42, 42, 44, 0.12);
 }
 
 html {
@@ -28,7 +29,9 @@ body {
   display: flex;
   flex-direction: column;
   color: var(--foreground);
-  background: var(--background);
+  background:
+    linear-gradient(90deg, rgba(8, 115, 58, 0.055) 0 12px, transparent 12px 24px),
+    var(--background);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -59,7 +62,7 @@ button {
 .public-shell {
   min-height: 100vh;
   display: grid;
-  grid-template-columns: minmax(280px, 0.95fr) minmax(320px, 1.05fr);
+  grid-template-columns: minmax(280px, 0.9fr) minmax(320px, 1.1fr);
 }
 
 .survey-hero {
@@ -69,46 +72,93 @@ button {
   padding: 56px;
   color: #fff;
   background:
-    linear-gradient(180deg, rgba(8, 19, 16, 0.2), rgba(8, 19, 16, 0.86)),
-    url("https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1600&q=80")
+    linear-gradient(180deg, rgba(27, 27, 29, 0.18), rgba(27, 27, 29, 0.88)),
+    url("https://images.unsplash.com/photo-1595295333158-4742f28fbd85?auto=format&fit=crop&w=1600&q=85")
       center/cover;
+}
+
+.hero-logo,
+.card-logo,
+.login-logo,
+.admin-logo {
+  display: block;
+  object-fit: contain;
+  background: #fff;
+}
+
+.hero-logo {
+  width: min(100%, 460px);
+  margin-bottom: 30px;
+  border-radius: 8px;
+  padding: 18px 22px;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.24);
+}
+
+.card-logo {
+  width: min(100%, 300px);
+  margin-bottom: 22px;
+}
+
+.login-logo {
+  width: min(100%, 280px);
+  margin-bottom: 22px;
+}
+
+.admin-logo {
+  width: min(100%, 300px);
+  margin-bottom: 16px;
 }
 
 .survey-hero h1,
 .admin-header h1,
 .admin-login h1 {
-  font-size: clamp(2rem, 5vw, 4.8rem);
-  line-height: 0.96;
-  letter-spacing: 0;
-  max-width: 680px;
+  font-size: clamp(2rem, 5vw, 4.55rem);
+  line-height: 0.98;
+  letter-spacing: 0.02em;
+  max-width: 720px;
+  text-transform: uppercase;
 }
 
 .hero-copy {
-  max-width: 520px;
+  max-width: 540px;
   margin-top: 18px;
-  color: rgba(255, 255, 255, 0.86);
+  color: rgba(255, 255, 255, 0.88);
   font-size: 1.12rem;
   line-height: 1.6;
 }
 
 .eyebrow {
   color: var(--accent);
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 0;
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
 }
 
 .survey-card {
+  position: relative;
   width: min(100%, 760px);
   align-self: center;
   justify-self: center;
   margin: 32px;
   padding: clamp(24px, 5vw, 48px);
   border: 1px solid var(--line);
+  border-top: 6px solid var(--primary);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.94);
+  background: rgba(255, 255, 255, 0.97);
   box-shadow: var(--shadow);
+}
+
+.survey-card::after,
+.login-panel::after,
+.panel::after {
+  content: "";
+  display: block;
+  height: 4px;
+  margin-top: 20px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--primary) 0 33%, #fff 33% 66%, var(--accent) 66%);
+  border: 1px solid var(--line);
 }
 
 .form-header,
@@ -125,7 +175,8 @@ button {
 .panel h2,
 .comments-panel h2 {
   margin-top: 6px;
-  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  color: #444447;
+  font-size: clamp(1.65rem, 3vw, 2.55rem);
   line-height: 1.05;
 }
 
@@ -139,7 +190,7 @@ form {
   display: grid;
   gap: 8px;
   color: var(--muted);
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .field input,
@@ -148,7 +199,7 @@ form {
   width: 100%;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: #fff;
+  background: var(--surface-soft);
   color: var(--foreground);
   outline: none;
 }
@@ -169,7 +220,7 @@ form {
 .field textarea:focus,
 .search-field:focus-within {
   border-color: var(--primary);
-  box-shadow: 0 0 0 4px rgba(15, 107, 92, 0.12);
+  box-shadow: 0 0 0 4px rgba(8, 115, 58, 0.12);
 }
 
 .ratings-grid {
@@ -183,13 +234,14 @@ form {
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 14px;
+  background: #fff;
 }
 
 .rating-field legend {
   padding: 0 6px;
   color: var(--muted);
   font-size: 0.92rem;
-  font-weight: 800;
+  font-weight: 900;
 }
 
 .rating-buttons {
@@ -206,7 +258,7 @@ form {
   border-radius: 8px;
   background: #fff;
   color: var(--foreground);
-  font-weight: 800;
+  font-weight: 900;
 }
 
 .rating-buttons button.active {
@@ -224,7 +276,7 @@ form {
   justify-content: center;
   gap: 10px;
   border-radius: 8px;
-  font-weight: 800;
+  font-weight: 900;
 }
 
 .score-pill {
@@ -267,6 +319,11 @@ form {
   text-align: center;
 }
 
+.success-card .card-logo {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .success-icon {
   color: var(--success);
 }
@@ -283,11 +340,11 @@ form {
 }
 
 .coupon-code {
-  width: min(100%, 380px);
+  width: min(100%, 390px);
   min-height: 72px;
   margin-top: 26px;
   border: 1px dashed var(--primary);
-  background: #eef8f3;
+  background: #eef8f1;
   color: var(--primary-strong);
   font-size: clamp(1.4rem, 7vw, 2.35rem);
 }
@@ -295,7 +352,7 @@ form {
 .promo-text {
   margin-top: 16px;
   color: var(--foreground);
-  font-weight: 800;
+  font-weight: 900;
 }
 
 .microcopy {
@@ -304,12 +361,12 @@ form {
 }
 
 .error-message {
-  border: 1px solid rgba(180, 50, 50, 0.25);
+  border: 1px solid rgba(181, 31, 40, 0.25);
   border-radius: 8px;
   padding: 12px 14px;
   background: #fff4f4;
   color: var(--danger);
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .admin-login {
@@ -318,15 +375,16 @@ form {
   place-items: center;
   padding: 24px;
   background:
-    linear-gradient(90deg, rgba(247, 244, 238, 0.96), rgba(247, 244, 238, 0.76)),
-    url("https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1600&q=80")
+    linear-gradient(90deg, rgba(246, 246, 244, 0.96), rgba(246, 246, 244, 0.8)),
+    url("https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=1600&q=85")
       center/cover;
 }
 
 .login-panel {
-  width: min(100%, 460px);
+  width: min(100%, 470px);
   padding: 36px;
   border: 1px solid var(--line);
+  border-top: 6px solid var(--accent);
   border-radius: 8px;
   background: var(--surface);
   box-shadow: var(--shadow);
@@ -345,7 +403,7 @@ form {
   display: grid;
   place-items: center;
   color: var(--muted);
-  font-weight: 800;
+  font-weight: 900;
 }
 
 .admin-header {
@@ -353,7 +411,11 @@ form {
 }
 
 .admin-header h1 {
-  font-size: clamp(2rem, 4vw, 4rem);
+  font-size: clamp(2rem, 4vw, 3.8rem);
+}
+
+.admin-brand {
+  min-width: 0;
 }
 
 .icon-button {
@@ -368,14 +430,21 @@ form {
 
 .metric-card,
 .panel {
+  position: relative;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--surface);
-  box-shadow: 0 14px 40px rgba(24, 32, 29, 0.08);
+  box-shadow: 0 14px 40px rgba(42, 42, 44, 0.08);
 }
 
 .metric-card {
   padding: 18px;
+  border-top: 4px solid var(--primary);
+}
+
+.metric-card:nth-child(2),
+.metric-card:nth-child(4) {
+  border-top-color: var(--accent);
 }
 
 .metric-card span,
@@ -383,12 +452,13 @@ form {
 .comment-item span {
   color: var(--muted);
   font-size: 0.88rem;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .metric-card strong {
   display: block;
   margin-top: 8px;
+  color: #454548;
   font-size: clamp(1.8rem, 3vw, 2.6rem);
 }
 
@@ -422,14 +492,14 @@ form {
   display: flex;
   justify-content: space-between;
   color: var(--muted);
-  font-weight: 800;
+  font-weight: 900;
 }
 
 .bar-track {
   height: 10px;
   overflow: hidden;
   border-radius: 999px;
-  background: #ece6dd;
+  background: #ececea;
 }
 
 .bar-track span {
@@ -469,6 +539,7 @@ form {
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 12px;
+  background: #fff;
 }
 
 .coupon-row div {
@@ -512,6 +583,10 @@ form {
   .survey-hero {
     min-height: 42vh;
     padding: 28px;
+  }
+
+  .hero-logo {
+    width: min(100%, 360px);
   }
 
   .survey-card {

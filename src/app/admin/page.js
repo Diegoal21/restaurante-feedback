@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   BarChart3,
@@ -21,7 +22,7 @@ export default function AdminPage() {
   const [session, setSession] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(hasSupabaseEnv);
+  const [loading, setLoading] = useState(false);
   const [signingIn, setSigningIn] = useState(false);
   const [error, setError] = useState(
     hasSupabaseEnv
@@ -39,7 +40,7 @@ export default function AdminPage() {
     });
     const payload = await response.json();
     if (!response.ok) {
-      setError(payload.error || "No se pudieron cargar las estadísticas.");
+      setError(payload.error || "No se pudieron cargar las estadisticas.");
       return;
     }
     setData(payload);
@@ -50,7 +51,17 @@ export default function AdminPage() {
       return;
     }
 
+    let settled = false;
+    const loadingTimer = setTimeout(() => {
+      if (!settled) {
+        setLoading(false);
+        setError("No se pudo revisar la sesion. Intenta iniciar sesion.");
+      }
+    }, 5000);
+
     supabase.auth.getSession().then(({ data: authData }) => {
+      settled = true;
+      clearTimeout(loadingTimer);
       setSession(authData.session);
       setLoading(false);
       if (authData.session) loadStats(authData.session.access_token);
@@ -63,7 +74,11 @@ export default function AdminPage() {
       }
     );
 
-    return () => listener.subscription.unsubscribe();
+    return () => {
+      settled = true;
+      clearTimeout(loadingTimer);
+      listener.subscription.unsubscribe();
+    };
   }, [hasSupabaseEnv, loadStats, supabase]);
 
   async function signIn(event) {
@@ -132,9 +147,16 @@ export default function AdminPage() {
     return (
       <main className="admin-login">
         <section className="login-panel">
+          <Image
+            alt="Stromboli Trattoria"
+            className="login-logo"
+            height={960}
+            src="/stromboli-logo.jpg"
+            width={960}
+          />
           <ShieldCheck size={34} />
           <p className="eyebrow">Panel privado</p>
-          <h1>Entrar como dueño</h1>
+          <h1>Entrar como dueno</h1>
           <form onSubmit={signIn}>
             <label className="field">
               <span>Email</span>
@@ -147,7 +169,7 @@ export default function AdminPage() {
               />
             </label>
             <label className="field">
-              <span>Contraseña</span>
+              <span>Contrasena</span>
               <input
                 autoComplete="current-password"
                 onChange={(event) => setPassword(event.target.value)}
@@ -170,9 +192,18 @@ export default function AdminPage() {
   return (
     <main className="admin-shell">
       <header className="admin-header">
-        <div>
+        <div className="admin-brand">
+          <Image
+            alt="Stromboli Trattoria"
+            className="admin-logo"
+            height={960}
+            src="/stromboli-logo.jpg"
+            width={960}
+          />
           <p className="eyebrow">Dashboard</p>
-          <h1>{process.env.NEXT_PUBLIC_RESTAURANT_NAME || "Mesa Viva"}</h1>
+          <h1>
+            {process.env.NEXT_PUBLIC_RESTAURANT_NAME || "Stromboli Trattoria"}
+          </h1>
         </div>
         <div className="admin-actions">
           <button
@@ -258,7 +289,7 @@ export default function AdminPage() {
               </article>
             ))
           ) : (
-            <p className="muted">Todavía no hay comentarios.</p>
+            <p className="muted">Todavia no hay comentarios.</p>
           )}
         </div>
       </section>

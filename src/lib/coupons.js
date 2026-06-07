@@ -6,7 +6,8 @@ export function createCouponCode() {
   const values = new Uint8Array(7);
   webcrypto.getRandomValues(values);
   const suffix = Array.from(values, (value) => alphabet[value % alphabet.length]).join("");
-  return `MV-${suffix}`;
+  const prefix = process.env.COUPON_PREFIX || "ST";
+  return `${prefix}-${suffix}`;
 }
 
 export function getExpirationDate() {

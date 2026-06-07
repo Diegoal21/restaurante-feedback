@@ -1,8 +1,8 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "Mesa Viva | Encuesta y promociones",
-  description: "Encuesta con folios promocionales para restaurante.",
+  title: "Stromboli Trattoria | Encuesta y promociones",
+  description: "Encuesta con folios promocionales para Stromboli Trattoria.",
 };
 
 export default function RootLayout({ children }) {
