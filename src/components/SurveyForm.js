@@ -77,7 +77,7 @@ export default function SurveyForm({ initialTable }) {
           alt="Stromboli Trattoria"
           className="card-logo"
           height={960}
-          src="/stromboli-logo.jpg"
+          src="/stromboli-logo.png"
           width={960}
         />
         <CheckCircle2 className="success-icon" size={42} />
@@ -102,15 +102,15 @@ export default function SurveyForm({ initialTable }) {
 
   return (
     <main className="survey-card">
+      <Image
+        alt="Stromboli Trattoria"
+        className="card-logo card-logo-centered"
+        height={960}
+        src="/stromboli-logo.png"
+        width={960}
+      />
       <div className="form-header">
         <div>
-          <Image
-            alt="Stromboli Trattoria"
-            className="card-logo"
-            height={960}
-            src="/stromboli-logo.jpg"
-            width={960}
-          />
           <p className="eyebrow">Toma menos de un minuto</p>
           <h2>Como estuvo tu visita?</h2>
         </div>

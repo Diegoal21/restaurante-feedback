@@ -151,7 +151,7 @@ export default function AdminPage() {
             alt="Stromboli Trattoria"
             className="login-logo"
             height={960}
-            src="/stromboli-logo.jpg"
+            src="/stromboli-logo.png"
             width={960}
           />
           <ShieldCheck size={34} />
@@ -197,7 +197,7 @@ export default function AdminPage() {
             alt="Stromboli Trattoria"
             className="admin-logo"
             height={960}
-            src="/stromboli-logo.jpg"
+            src="/stromboli-logo.png"
             width={960}
           />
           <p className="eyebrow">Dashboard</p>

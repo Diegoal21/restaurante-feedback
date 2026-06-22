@@ -15,7 +15,7 @@ export default async function Home({ searchParams }) {
             alt="Stromboli Trattoria"
             className="hero-logo"
             height={960}
-            src="/stromboli-logo.jpg"
+            src="/stromboli-logo.png"
             width={960}
             priority
           />
