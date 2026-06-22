@@ -1,4 +1,3 @@
-import Image from "next/image";
 import SurveyForm from "@/components/SurveyForm";
 
 export default async function Home({ searchParams }) {
@@ -11,14 +10,6 @@ export default async function Home({ searchParams }) {
     <div className="public-shell">
       <section className="survey-hero">
         <div>
-          <Image
-            alt="Stromboli Trattoria"
-            className="hero-logo"
-            height={960}
-            src="/stromboli-logo.png"
-            width={960}
-            priority
-          />
           <p className="eyebrow">Encuesta de visita</p>
           <h1>{restaurantName}</h1>
           <p className="hero-copy">
