@@ -1,37 +1,79 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo, useState } from "react";
-import { CheckCircle2, Clipboard, Loader2, Star } from "lucide-react";
+import { useState } from "react";
+import { CheckCircle2, Clipboard, Loader2 } from "lucide-react";
 
-const ratingFields = [
-  ["rating_general", "Experiencia general"],
-  ["rating_food", "Comida"],
-  ["rating_service", "Servicio"],
-  ["rating_cleanliness", "Limpieza"],
+const questions = [
+  {
+    name: "how_found",
+    label: "1. Como nos encontraste?",
+    options: [
+      "Recomendacion de familiares o amigos",
+      "Redes sociales",
+      "Google / Internet",
+      "Pase por el lugar",
+      "Plataforma de entrega (Uber Eats, Didi Food, etc.)",
+      "Ya nos conocia",
+      "Otro",
+    ],
+  },
+  {
+    name: "service_attention",
+    label: "2. Como calificarias la atencion recibida por nuestro personal?",
+    options: ["Excelente", "Buena", "Regular", "Mala"],
+  },
+  {
+    name: "wait_time",
+    label: "3. Que te parecio el tiempo de espera para recibir tus alimentos o bebidas?",
+    options: ["Muy rapido", "Adecuado", "Un poco lento", "Demasiado lento"],
+  },
+  {
+    name: "food_quality",
+    label: "4. Como calificas la calidad de los alimentos y bebidas consumidos?",
+    options: ["Excelente", "Buena", "Regular", "Mala"],
+  },
+  {
+    name: "cleanliness",
+    label: "5. Como encontraste la limpieza y presentacion del establecimiento?",
+    options: ["Excelente", "Buena", "Regular", "Mala"],
+  },
+  {
+    name: "payment_experience",
+    label: "6. Como fue tu experiencia con el proceso de cobro y pago?",
+    options: ["Excelente", "Buena", "Regular", "Mala"],
+  },
+  {
+    name: "overall_satisfaction",
+    label: "7. Considerando tu visita en general, que tan satisfecho(a) quedaste?",
+    options: ["Muy satisfecho(a)", "Satisfecho(a)", "Poco satisfecho(a)", "Insatisfecho(a)"],
+  },
+  {
+    name: "recommend_likelihood",
+    label: "8. Que tan probable es que nos recomiendes a familiares o amigos?",
+    options: ["Definitivamente si", "Probablemente si", "Probablemente no", "Definitivamente no"],
+  },
 ];
 
-const initialRatings = {
-  rating_general: 5,
-  rating_food: 5,
-  rating_service: 5,
-  rating_cleanliness: 5,
-};
+const branches = ["Gómez Farías", "Navarrete", "Hotel Colonial"];
 
-export default function SurveyForm({ initialTable }) {
-  const [ratings, setRatings] = useState(initialRatings);
-  const [tableNumber, setTableNumber] = useState(initialTable || "");
+const initialAnswers = questions.reduce((result, question) => {
+  result[question.name] = "";
+  return result;
+}, {});
+
+export default function SurveyForm({ initialBranch }) {
+  const [answers, setAnswers] = useState(initialAnswers);
+  const [branch, setBranch] = useState(
+    branches.includes(initialBranch) ? initialBranch : ""
+  );
   const [comment, setComment] = useState("");
-  const [contact, setContact] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
 
-  const average = useMemo(() => {
-    const values = Object.values(ratings);
-    return values.reduce((sum, value) => sum + value, 0) / values.length;
-  }, [ratings]);
+  const answeredCount = Object.values(answers).filter(Boolean).length;
 
   async function submitSurvey(event) {
     event.preventDefault();
@@ -43,10 +85,9 @@ export default function SurveyForm({ initialTable }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          table_number: tableNumber.trim(),
+          branch: branch.trim(),
           comment: comment.trim(),
-          contact: contact.trim(),
-          ...ratings,
+          ...answers,
         }),
       });
 
@@ -111,67 +152,80 @@ export default function SurveyForm({ initialTable }) {
       />
       <div className="form-header">
         <div>
-          <p className="eyebrow">Toma menos de un minuto</p>
-          <h2>Como estuvo tu visita?</h2>
+          <p className="eyebrow">Encuesta de satisfaccion</p>
+          <h2>Queremos saber como estuvo tu visita</h2>
         </div>
         <div className="score-pill">
-          <Star size={16} fill="currentColor" />
-          {average.toFixed(1)}
+          {answeredCount}/{questions.length}
         </div>
       </div>
 
       <form onSubmit={submitSurvey}>
         <label className="field">
-          <span>Mesa</span>
-          <input
-            inputMode="numeric"
-            name="table_number"
-            onChange={(event) => setTableNumber(event.target.value)}
-            placeholder="Ej. 12"
-            value={tableNumber}
-          />
+          <span>Sucursal</span>
+          <select
+            name="branch"
+            onChange={(event) => setBranch(event.target.value)}
+            required
+            value={branch}
+          >
+            <option value="">Selecciona una sucursal</option>
+            {branches.map((branchName) => (
+              <option key={branchName} value={branchName}>
+                {branchName}
+              </option>
+            ))}
+          </select>
         </label>
 
-        <div className="ratings-grid">
-          {ratingFields.map(([name, label]) => (
-            <fieldset className="rating-field" key={name}>
-              <legend>{label}</legend>
-              <div className="rating-buttons">
-                {[1, 2, 3, 4, 5].map((value) => (
-                  <button
-                    aria-label={`${label}: ${value}`}
-                    className={ratings[name] === value ? "active" : ""}
-                    key={value}
-                    onClick={() =>
-                      setRatings((current) => ({ ...current, [name]: value }))
-                    }
-                    type="button"
-                  >
-                    {value}
-                  </button>
-                ))}
+        <div className="question-list">
+          {questions.map((question) => (
+            <fieldset className="choice-field" key={question.name}>
+              <legend>{question.label}</legend>
+              <div className="choice-options">
+                {question.options.map((option) => {
+                  const inputId = `${question.name}-${option}`;
+                  return (
+                    <label
+                      className={
+                        answers[question.name] === option
+                          ? "choice-option selected"
+                          : "choice-option"
+                      }
+                      htmlFor={inputId}
+                      key={option}
+                    >
+                      <input
+                        checked={answers[question.name] === option}
+                        id={inputId}
+                        name={question.name}
+                        onChange={() =>
+                          setAnswers((current) => ({
+                            ...current,
+                            [question.name]: option,
+                          }))
+                        }
+                        required
+                        type="radio"
+                        value={option}
+                      />
+                      <span>{option}</span>
+                    </label>
+                  );
+                })}
               </div>
             </fieldset>
           ))}
         </div>
 
         <label className="field">
-          <span>Comentario opcional</span>
+          <span>Comentario adicional opcional</span>
           <textarea
             maxLength={600}
             onChange={(event) => setComment(event.target.value)}
             placeholder="Cuentanos que hicimos bien o que podemos mejorar."
             rows={4}
             value={comment}
-          />
-        </label>
-
-        <label className="field">
-          <span>Telefono o email opcional</span>
-          <input
-            onChange={(event) => setContact(event.target.value)}
-            placeholder="Solo si quieres que te contactemos"
-            value={contact}
           />
         </label>
 

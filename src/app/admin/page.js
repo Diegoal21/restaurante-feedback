@@ -13,6 +13,18 @@ import {
 } from "lucide-react";
 import { createBrowserSupabase } from "@/lib/supabase-browser";
 
+const surveyBreakdowns = [
+  ["branch", "Sucursal"],
+  ["how_found", "1. Como nos encontraron"],
+  ["service_attention", "2. Atencion del personal"],
+  ["wait_time", "3. Tiempo de espera"],
+  ["food_quality", "4. Alimentos y bebidas"],
+  ["cleanliness", "5. Limpieza y presentacion"],
+  ["payment_experience", "6. Cobro y pago"],
+  ["overall_satisfaction", "7. Satisfaccion general"],
+  ["recommend_likelihood", "8. Probabilidad de recomendacion"],
+];
+
 export default function AdminPage() {
   const supabase = useMemo(() => createBrowserSupabase(), []);
   const hasSupabaseEnv = Boolean(
@@ -237,9 +249,9 @@ export default function AdminPage() {
             <BarChart3 size={20} />
             <h2>Calificaciones</h2>
           </div>
-          <ScoreBar label="General" value={data?.summary?.rating_general || 0} />
-          <ScoreBar label="Comida" value={data?.summary?.rating_food || 0} />
-          <ScoreBar label="Servicio" value={data?.summary?.rating_service || 0} />
+          <ScoreBar label="Satisfaccion" value={data?.summary?.rating_general || 0} />
+          <ScoreBar label="Alimentos y bebidas" value={data?.summary?.rating_food || 0} />
+          <ScoreBar label="Atencion" value={data?.summary?.rating_service || 0} />
           <ScoreBar label="Limpieza" value={data?.summary?.rating_cleanliness || 0} />
         </div>
 
@@ -275,6 +287,22 @@ export default function AdminPage() {
         </div>
       </section>
 
+      <section className="panel survey-breakdowns-panel">
+        <div className="panel-title">
+          <BarChart3 size={20} />
+          <h2>Respuestas de encuesta</h2>
+        </div>
+        <div className="survey-breakdowns-grid">
+          {surveyBreakdowns.map(([key, title]) => (
+            <BreakdownList
+              items={data?.breakdowns?.[key]}
+              key={key}
+              title={title}
+            />
+          ))}
+        </div>
+      </section>
+
       <section className="panel comments-panel">
         <h2>Comentarios recientes</h2>
         <div className="comments-list">
@@ -283,7 +311,7 @@ export default function AdminPage() {
               <article className="comment-item" key={survey.id}>
                 <p>{survey.comment}</p>
                 <span>
-                  Mesa {survey.table_number || "sin dato"} -{" "}
+                  Sucursal {survey.branch || survey.table_number || "sin dato"} -{" "}
                   {new Date(survey.created_at).toLocaleDateString("es-MX")}
                 </span>
               </article>
@@ -317,6 +345,30 @@ function ScoreBar({ label, value }) {
       <div className="bar-track">
         <span style={{ width }} />
       </div>
+    </div>
+  );
+}
+
+function BreakdownList({ items, title }) {
+  const rows = Object.entries(items || {}).sort((first, second) => second[1] - first[1]);
+  const max = rows.reduce((result, [, count]) => Math.max(result, count), 0);
+
+  if (!rows.length) return null;
+
+  return (
+    <div className="breakdown-list">
+      <h3>{title}</h3>
+      {rows.slice(0, 5).map(([label, count]) => (
+        <div className="breakdown-row" key={label}>
+          <div>
+            <span>{label}</span>
+            <strong>{count}</strong>
+          </div>
+          <div className="bar-track">
+            <span style={{ width: `${max ? (count / max) * 100 : 0}%` }} />
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

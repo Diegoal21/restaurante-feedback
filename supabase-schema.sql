@@ -2,7 +2,16 @@ create extension if not exists pgcrypto;
 
 create table if not exists public.surveys (
   id uuid primary key default gen_random_uuid(),
+  branch text,
   table_number text,
+  how_found text,
+  service_attention text,
+  wait_time text,
+  food_quality text,
+  cleanliness text,
+  payment_experience text,
+  overall_satisfaction text,
+  recommend_likelihood text,
   rating_general integer not null check (rating_general between 1 and 5),
   rating_food integer not null check (rating_food between 1 and 5),
   rating_service integer not null check (rating_service between 1 and 5),
@@ -11,6 +20,20 @@ create table if not exists public.surveys (
   contact text,
   created_at timestamptz not null default now()
 );
+
+alter table public.surveys add column if not exists branch text;
+alter table public.surveys add column if not exists how_found text;
+alter table public.surveys add column if not exists service_attention text;
+alter table public.surveys add column if not exists wait_time text;
+alter table public.surveys add column if not exists food_quality text;
+alter table public.surveys add column if not exists cleanliness text;
+alter table public.surveys add column if not exists payment_experience text;
+alter table public.surveys add column if not exists overall_satisfaction text;
+alter table public.surveys add column if not exists recommend_likelihood text;
+
+update public.surveys
+set branch = table_number
+where branch is null and table_number is not null;
 
 create table if not exists public.coupons (
   id uuid primary key default gen_random_uuid(),

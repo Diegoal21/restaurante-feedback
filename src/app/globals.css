@@ -51,6 +51,7 @@ a {
 
 button,
 input,
+select,
 textarea {
   font: inherit;
 }
@@ -74,9 +75,8 @@ button {
   color: #fff;
   text-align: center;
   background:
-    linear-gradient(180deg, rgba(27, 27, 29, 0.18), rgba(27, 27, 29, 0.88)),
-    url("https://images.unsplash.com/photo-1595295333158-4742f28fbd85?auto=format&fit=crop&w=1600&q=85")
-      center/cover;
+    linear-gradient(180deg, rgba(27, 27, 29, 0.1), rgba(27, 27, 29, 0.86)),
+    url("/stromboli-header.jpg") center/cover;
 }
 
 .hero-logo,
@@ -210,6 +210,7 @@ form {
 }
 
 .field input,
+.field select,
 .field textarea,
 .search-field input {
   width: 100%;
@@ -221,9 +222,22 @@ form {
 }
 
 .field input,
+.field select,
 .search-field input {
   min-height: 48px;
   padding: 0 14px;
+}
+
+.field select {
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--muted) 50%),
+    linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) 20px,
+    calc(100% - 12px) 20px;
+  background-repeat: no-repeat;
+  background-size: 6px 6px;
 }
 
 .field textarea {
@@ -233,6 +247,7 @@ form {
 }
 
 .field input:focus,
+.field select:focus,
 .field textarea:focus,
 .search-field:focus-within {
   border-color: var(--primary);
@@ -243,6 +258,61 @@ form {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
+}
+
+.question-list {
+  display: grid;
+  gap: 16px;
+}
+
+.choice-field {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  background: #fff;
+}
+
+.choice-field legend {
+  padding: 0 6px;
+  color: #444447;
+  font-size: 1rem;
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+.choice-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.choice-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 46px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: var(--surface-soft);
+  color: var(--foreground);
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.choice-option input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+  flex: 0 0 auto;
+}
+
+.choice-option.selected {
+  border-color: rgba(8, 115, 58, 0.42);
+  background: #eef8f1;
+  box-shadow: 0 0 0 3px rgba(8, 115, 58, 0.08);
 }
 
 .rating-field {
@@ -535,6 +605,58 @@ form {
   background: linear-gradient(90deg, var(--primary), var(--accent));
 }
 
+.breakdown-block {
+  display: grid;
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.breakdown-list {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+
+.breakdown-list h3 {
+  color: #444447;
+  font-size: 1rem;
+}
+
+.breakdown-row {
+  display: grid;
+  gap: 6px;
+}
+
+.breakdown-row > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 850;
+}
+
+.breakdown-row strong {
+  color: var(--foreground);
+}
+
+.survey-breakdowns-panel {
+  margin-top: 18px;
+}
+
+.survey-breakdowns-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.survey-breakdowns-grid .breakdown-list {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px;
+  background: var(--surface-soft);
+}
+
 .search-field {
   display: flex;
   align-items: center;
@@ -606,6 +728,10 @@ form {
     grid-template-columns: 1fr;
   }
 
+  .survey-breakdowns-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .survey-hero {
     min-height: 42vh;
     padding: 28px;
@@ -628,6 +754,8 @@ form {
 
 @media (max-width: 560px) {
   .ratings-grid,
+  .choice-options,
+  .survey-breakdowns-grid,
   .metric-grid {
     grid-template-columns: 1fr;
   }

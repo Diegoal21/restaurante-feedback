@@ -2,7 +2,7 @@ import SurveyForm from "@/components/SurveyForm";
 
 export default async function Home({ searchParams }) {
   const params = await searchParams;
-  const tableNumber = params?.mesa || params?.table || "";
+  const branch = params?.sucursal || params?.branch || params?.mesa || params?.table || "";
   const restaurantName =
     process.env.NEXT_PUBLIC_RESTAURANT_NAME || "Stromboli Trattoria";
 
@@ -13,12 +13,12 @@ export default async function Home({ searchParams }) {
           <p className="eyebrow">Encuesta de visita</p>
           <h1>{restaurantName}</h1>
           <p className="hero-copy">
-            Cuentanos como estuvo tu experiencia y recibe una promocion para tu
-            proxima visita.
+            Comparte tu experiencia y recibe una promocion para tu proxima
+            visita.
           </p>
         </div>
       </section>
-      <SurveyForm initialTable={tableNumber} />
+      <SurveyForm initialBranch={branch} />
     </div>
   );
 }
