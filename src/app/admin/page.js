@@ -63,21 +63,7 @@ export default function AdminPage() {
       return;
     }
 
-    let settled = false;
-    const loadingTimer = setTimeout(() => {
-      if (!settled) {
-        setLoading(false);
-        setError("No se pudo revisar la sesion. Intenta iniciar sesion.");
-      }
-    }, 5000);
-
-    supabase.auth.getSession().then(({ data: authData }) => {
-      settled = true;
-      clearTimeout(loadingTimer);
-      setSession(authData.session);
-      setLoading(false);
-      if (authData.session) loadStats(authData.session.access_token);
-    });
+    clearStoredSupabaseSessions();
 
     const { data: listener } = supabase.auth.onAuthStateChange(
       (_event, nextSession) => {
@@ -87,8 +73,6 @@ export default function AdminPage() {
     );
 
     return () => {
-      settled = true;
-      clearTimeout(loadingTimer);
       listener.subscription.unsubscribe();
     };
   }, [hasSupabaseEnv, loadStats, supabase]);
@@ -101,11 +85,19 @@ export default function AdminPage() {
       return;
     }
     setSigningIn(true);
-    const { error: authError } = await supabase.auth.signInWithPassword({
+    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
-    if (authError) setError("Credenciales incorrectas o usuario no registrado.");
+    if (authError || !authData.session) {
+      setError("Credenciales incorrectas o usuario no registrado.");
+      setSigningIn(false);
+      return;
+    }
+
+    setSession(authData.session);
+    setPassword("");
+    await loadStats(authData.session.access_token);
     setSigningIn(false);
   }
 
@@ -236,8 +228,8 @@ export default function AdminPage() {
       <section className="metric-grid">
         <Metric label="Encuestas" value={data?.summary?.survey_count || 0} />
         <Metric
-          label="Promedio"
-          value={(data?.summary?.rating_average || 0).toFixed(1)}
+          label="Satisfaccion positiva"
+          value={`${Math.round(data?.summary?.satisfaction_positive_rate || 0)}%`}
         />
         <Metric label="Folios activos" value={data?.summary?.coupons_unused || 0} />
         <Metric label="Folios usados" value={data?.summary?.coupons_redeemed || 0} />
@@ -247,7 +239,7 @@ export default function AdminPage() {
         <div className="panel">
           <div className="panel-title">
             <BarChart3 size={20} />
-            <h2>Calificaciones</h2>
+            <h2>Indicadores de satisfaccion</h2>
           </div>
           <ScoreBar label="Satisfaccion" value={data?.summary?.rating_general || 0} />
           <ScoreBar label="Alimentos y bebidas" value={data?.summary?.rating_food || 0} />
@@ -304,20 +296,21 @@ export default function AdminPage() {
       </section>
 
       <section className="panel comments-panel">
-        <h2>Comentarios recientes</h2>
+        <h2>Registros recientes</h2>
         <div className="comments-list">
-          {data?.comments?.length ? (
-            data.comments.map((survey) => (
+          {data?.recent_surveys?.length ? (
+            data.recent_surveys.map((survey) => (
               <article className="comment-item" key={survey.id}>
-                <p>{survey.comment}</p>
+                <p>{survey.comment || "Sin comentario adicional."}</p>
                 <span>
                   Sucursal {survey.branch || survey.table_number || "sin dato"} -{" "}
+                  Tel. {survey.contact || "sin dato"} -{" "}
                   {new Date(survey.created_at).toLocaleDateString("es-MX")}
                 </span>
               </article>
             ))
           ) : (
-            <p className="muted">Todavia no hay comentarios.</p>
+            <p className="muted">Todavia no hay registros.</p>
           )}
         </div>
       </section>
@@ -332,6 +325,16 @@ function Metric({ label, value }) {
       <strong>{value}</strong>
     </article>
   );
+}
+
+function clearStoredSupabaseSessions() {
+  if (typeof window === "undefined") return;
+
+  [window.localStorage, window.sessionStorage].forEach((storage) => {
+    Object.keys(storage)
+      .filter((key) => key.startsWith("sb-") && key.endsWith("-auth-token"))
+      .forEach((key) => storage.removeItem(key));
+  });
 }
 
 function ScoreBar({ label, value }) {

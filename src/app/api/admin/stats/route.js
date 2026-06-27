@@ -12,7 +12,7 @@ export async function GET(request) {
       supabase
         .from("surveys")
         .select(
-          "id, branch, table_number, how_found, service_attention, wait_time, food_quality, cleanliness, payment_experience, overall_satisfaction, recommend_likelihood, rating_general, rating_food, rating_service, rating_cleanliness, comment, created_at"
+          "id, branch, table_number, contact, how_found, service_attention, wait_time, food_quality, cleanliness, payment_experience, overall_satisfaction, recommend_likelihood, rating_general, rating_food, rating_service, rating_cleanliness, comment, created_at"
         )
         .order("created_at", { ascending: false })
         .limit(200),
@@ -43,6 +43,7 @@ export async function GET(request) {
     summary: {
       survey_count: surveys.length,
       rating_average: averages.rating_general,
+      satisfaction_positive_rate: satisfactionPositiveRate(surveys),
       ...averages,
       coupons_unused: normalizedCoupons.filter((coupon) => coupon.status === "unused")
         .length,
@@ -63,7 +64,7 @@ export async function GET(request) {
       recommend_likelihood: countByAnswer(surveys, "recommend_likelihood"),
     },
     coupons: normalizedCoupons,
-    comments: surveys.filter((survey) => survey.comment).slice(0, 8),
+    recent_surveys: surveys.slice(0, 8),
   });
 }
 
@@ -80,6 +81,17 @@ function averageRatings(surveys) {
     result[field] = surveys.length ? total / surveys.length : 0;
     return result;
   }, {});
+}
+
+function satisfactionPositiveRate(surveys) {
+  if (!surveys.length) return 0;
+
+  const positiveAnswers = ["Muy satisfecho(a)", "Satisfecho(a)"];
+  const positiveCount = surveys.filter((survey) =>
+    positiveAnswers.includes(survey.overall_satisfaction)
+  ).length;
+
+  return (positiveCount / surveys.length) * 100;
 }
 
 function countByAnswer(surveys, field) {

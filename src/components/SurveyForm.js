@@ -67,6 +67,7 @@ export default function SurveyForm({ initialBranch }) {
   const [branch, setBranch] = useState(
     branches.includes(initialBranch) ? initialBranch : ""
   );
+  const [contact, setContact] = useState("");
   const [comment, setComment] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState(null);
@@ -86,6 +87,7 @@ export default function SurveyForm({ initialBranch }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           branch: branch.trim(),
+          contact: contact.trim(),
           comment: comment.trim(),
           ...answers,
         }),
@@ -176,6 +178,21 @@ export default function SurveyForm({ initialBranch }) {
               </option>
             ))}
           </select>
+        </label>
+
+        <label className="field">
+          <span>Telefono</span>
+          <input
+            inputMode="tel"
+            maxLength={20}
+            minLength={8}
+            name="contact"
+            onChange={(event) => setContact(event.target.value)}
+            placeholder="Ej. 662 123 4567"
+            required
+            type="tel"
+            value={contact}
+          />
         </label>
 
         <div className="question-list">

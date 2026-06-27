@@ -22,6 +22,7 @@ create table if not exists public.surveys (
 );
 
 alter table public.surveys add column if not exists branch text;
+alter table public.surveys add column if not exists contact text;
 alter table public.surveys add column if not exists how_found text;
 alter table public.surveys add column if not exists service_attention text;
 alter table public.surveys add column if not exists wait_time text;

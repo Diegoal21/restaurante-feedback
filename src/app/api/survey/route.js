@@ -3,7 +3,7 @@ import { createCouponCode, getExpirationDate } from "@/lib/coupons";
 import { createServiceSupabase } from "@/lib/supabase-server";
 
 const promotionText =
-  process.env.PROMOTION_TEXT || "10% de descuento en tu proxima visita";
+  process.env.PROMOTION_TEXT || "15% de descuento en pizzas, ensaladas o especialidades";
 
 const branches = ["Gómez Farías", "Navarrete", "Hotel Colonial"];
 
@@ -54,9 +54,19 @@ export async function POST(request) {
 
     const supabase = createServiceSupabase();
     const branch = String(body.branch || body.table_number || "").trim();
+    const contact = String(body.contact || "").trim().slice(0, 30);
+    const phoneDigits = contact.replace(/\D/g, "");
+
     if (!branches.includes(branch)) {
       return NextResponse.json(
         { error: "Selecciona una sucursal valida." },
+        { status: 400 }
+      );
+    }
+
+    if (phoneDigits.length < 8) {
+      return NextResponse.json(
+        { error: "Ingresa un telefono valido." },
         { status: 400 }
       );
     }
@@ -65,6 +75,7 @@ export async function POST(request) {
       .from("surveys")
       .insert({
         branch,
+        contact,
         how_found: answers.how_found,
         service_attention: answers.service_attention,
         wait_time: answers.wait_time,
