@@ -2,8 +2,7 @@ import { NextResponse } from "next/server";
 import { createCouponCode, getExpirationDate } from "@/lib/coupons";
 import { createServiceSupabase } from "@/lib/supabase-server";
 
-const promotionText =
-  process.env.PROMOTION_TEXT || "15% de descuento en pizzas, ensaladas o especialidades";
+const promotionText = "15% de descuento en pizzas, ensaladas o especialidades";
 
 const branches = ["Gómez Farías", "Navarrete", "Hotel Colonial"];
 
