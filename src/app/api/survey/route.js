@@ -8,16 +8,16 @@ const branches = ["Gómez Farías", "Navarrete", "Hotel Colonial"];
 
 const surveyOptions = {
   how_found: [
-    "Recomendacion de familiares o amigos",
+    "Recomendación de familiares o amigos",
     "Redes sociales",
     "Google / Internet",
-    "Pase por el lugar",
+    "Pasé por el lugar",
     "Plataforma de entrega (Uber Eats, Didi Food, etc.)",
-    "Ya nos conocia",
+    "Ya nos conocía",
     "Otro",
   ],
   service_attention: ["Excelente", "Buena", "Regular", "Mala"],
-  wait_time: ["Muy rapido", "Adecuado", "Un poco lento", "Demasiado lento"],
+  wait_time: ["Muy rápido", "Adecuado", "Un poco lento", "Demasiado lento"],
   food_quality: ["Excelente", "Buena", "Regular", "Mala"],
   cleanliness: ["Excelente", "Buena", "Regular", "Mala"],
   payment_experience: ["Excelente", "Buena", "Regular", "Mala"],
@@ -28,8 +28,8 @@ const surveyOptions = {
     "Insatisfecho(a)",
   ],
   recommend_likelihood: [
-    "Definitivamente si",
-    "Probablemente si",
+    "Definitivamente sí",
+    "Probablemente sí",
     "Probablemente no",
     "Definitivamente no",
   ],
@@ -58,14 +58,14 @@ export async function POST(request) {
 
     if (!branches.includes(branch)) {
       return NextResponse.json(
-        { error: "Selecciona una sucursal valida." },
+        { error: "Selecciona una sucursal válida." },
         { status: 400 }
       );
     }
 
     if (phoneDigits.length < 8) {
       return NextResponse.json(
-        { error: "Ingresa un telefono valido." },
+        { error: "Ingresa un teléfono válido." },
         { status: 400 }
       );
     }

@@ -15,14 +15,14 @@ import { createBrowserSupabase } from "@/lib/supabase-browser";
 
 const surveyBreakdowns = [
   ["branch", "Sucursal"],
-  ["how_found", "1. Como nos encontraron"],
-  ["service_attention", "2. Atencion del personal"],
+  ["how_found", "1. Cómo nos encontraron"],
+  ["service_attention", "2. Atención del personal"],
   ["wait_time", "3. Tiempo de espera"],
   ["food_quality", "4. Alimentos y bebidas"],
-  ["cleanliness", "5. Limpieza y presentacion"],
+  ["cleanliness", "5. Limpieza y presentación"],
   ["payment_experience", "6. Cobro y pago"],
-  ["overall_satisfaction", "7. Satisfaccion general"],
-  ["recommend_likelihood", "8. Probabilidad de recomendacion"],
+  ["overall_satisfaction", "7. Satisfacción general"],
+  ["recommend_likelihood", "8. Probabilidad de recomendación"],
 ];
 
 export default function AdminPage() {
@@ -52,7 +52,7 @@ export default function AdminPage() {
     });
     const payload = await response.json();
     if (!response.ok) {
-      setError(payload.error || "No se pudieron cargar las estadisticas.");
+      setError(payload.error || "No se pudieron cargar las estadísticas.");
       return;
     }
     setData(payload);
@@ -160,7 +160,7 @@ export default function AdminPage() {
           />
           <ShieldCheck size={34} />
           <p className="eyebrow">Panel privado</p>
-          <h1>Entrar como dueno</h1>
+          <h1>Entrar como dueño</h1>
           <form onSubmit={signIn}>
             <label className="field">
               <span>Email</span>
@@ -173,7 +173,7 @@ export default function AdminPage() {
               />
             </label>
             <label className="field">
-              <span>Contrasena</span>
+              <span>Contraseña</span>
               <input
                 autoComplete="current-password"
                 onChange={(event) => setPassword(event.target.value)}
@@ -228,7 +228,7 @@ export default function AdminPage() {
       <section className="metric-grid">
         <Metric label="Encuestas" value={data?.summary?.survey_count || 0} />
         <Metric
-          label="Satisfaccion positiva"
+          label="Satisfacción positiva"
           value={`${Math.round(data?.summary?.satisfaction_positive_rate || 0)}%`}
         />
         <Metric label="Folios activos" value={data?.summary?.coupons_unused || 0} />
@@ -239,11 +239,11 @@ export default function AdminPage() {
         <div className="panel">
           <div className="panel-title">
             <BarChart3 size={20} />
-            <h2>Indicadores de satisfaccion</h2>
+            <h2>Indicadores de satisfacción</h2>
           </div>
-          <ScoreBar label="Satisfaccion" value={data?.summary?.rating_general || 0} />
+          <ScoreBar label="Satisfacción" value={data?.summary?.rating_general || 0} />
           <ScoreBar label="Alimentos y bebidas" value={data?.summary?.rating_food || 0} />
-          <ScoreBar label="Atencion" value={data?.summary?.rating_service || 0} />
+          <ScoreBar label="Atención" value={data?.summary?.rating_service || 0} />
           <ScoreBar label="Limpieza" value={data?.summary?.rating_cleanliness || 0} />
         </div>
 
@@ -310,7 +310,7 @@ export default function AdminPage() {
               </article>
             ))
           ) : (
-            <p className="muted">Todavia no hay registros.</p>
+            <p className="muted">Todavía no hay registros.</p>
           )}
         </div>
       </section>

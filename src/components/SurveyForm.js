@@ -7,51 +7,51 @@ import { CheckCircle2, Clipboard, Loader2 } from "lucide-react";
 const questions = [
   {
     name: "how_found",
-    label: "1. Como nos encontraste?",
+    label: "1. ¿Cómo nos encontraste?",
     options: [
-      "Recomendacion de familiares o amigos",
+      "Recomendación de familiares o amigos",
       "Redes sociales",
       "Google / Internet",
-      "Pase por el lugar",
+      "Pasé por el lugar",
       "Plataforma de entrega (Uber Eats, Didi Food, etc.)",
-      "Ya nos conocia",
+      "Ya nos conocía",
       "Otro",
     ],
   },
   {
     name: "service_attention",
-    label: "2. Como calificarias la atencion recibida por nuestro personal?",
+    label: "2. ¿Cómo calificarías la atención recibida por nuestro personal?",
     options: ["Excelente", "Buena", "Regular", "Mala"],
   },
   {
     name: "wait_time",
-    label: "3. Que te parecio el tiempo de espera para recibir tus alimentos o bebidas?",
-    options: ["Muy rapido", "Adecuado", "Un poco lento", "Demasiado lento"],
+    label: "3. ¿Qué te pareció el tiempo de espera para recibir tus alimentos o bebidas?",
+    options: ["Muy rápido", "Adecuado", "Un poco lento", "Demasiado lento"],
   },
   {
     name: "food_quality",
-    label: "4. Como calificas la calidad de los alimentos y bebidas consumidos?",
+    label: "4. ¿Cómo calificas la calidad de los alimentos y bebidas consumidos?",
     options: ["Excelente", "Buena", "Regular", "Mala"],
   },
   {
     name: "cleanliness",
-    label: "5. Como encontraste la limpieza y presentacion del establecimiento?",
+    label: "5. ¿Cómo encontraste la limpieza y presentación del establecimiento?",
     options: ["Excelente", "Buena", "Regular", "Mala"],
   },
   {
     name: "payment_experience",
-    label: "6. Como fue tu experiencia con el proceso de cobro y pago?",
+    label: "6. ¿Cómo fue tu experiencia con el proceso de cobro y pago?",
     options: ["Excelente", "Buena", "Regular", "Mala"],
   },
   {
     name: "overall_satisfaction",
-    label: "7. Considerando tu visita en general, que tan satisfecho(a) quedaste?",
+    label: "7. Considerando tu visita en general, ¿qué tan satisfecho(a) quedaste?",
     options: ["Muy satisfecho(a)", "Satisfecho(a)", "Poco satisfecho(a)", "Insatisfecho(a)"],
   },
   {
     name: "recommend_likelihood",
-    label: "8. Que tan probable es que nos recomiendes a familiares o amigos?",
-    options: ["Definitivamente si", "Probablemente si", "Probablemente no", "Definitivamente no"],
+    label: "8. ¿Qué tan probable es que nos recomiendes a familiares o amigos?",
+    options: ["Definitivamente sí", "Probablemente sí", "Probablemente no", "Definitivamente no"],
   },
 ];
 
@@ -124,10 +124,10 @@ export default function SurveyForm({ initialBranch }) {
           width={960}
         />
         <CheckCircle2 className="success-icon" size={42} />
-        <p className="eyebrow">Grazie por tu opinion</p>
-        <h2>Tu promocion esta lista</h2>
+        <p className="eyebrow">Gracias por tu opinión</p>
+        <h2>Tu promoción está lista</h2>
         <p className="muted">
-          Presenta este folio en tu proxima visita. El restaurante lo marcara
+          Presenta este folio en tu próxima visita. El restaurante lo marcará
           como usado al aplicarlo.
         </p>
         <button className="coupon-code" onClick={copyCode} type="button">
@@ -154,8 +154,8 @@ export default function SurveyForm({ initialBranch }) {
       />
       <div className="form-header">
         <div>
-          <p className="eyebrow">Encuesta de satisfaccion</p>
-          <h2>Queremos saber como estuvo tu visita</h2>
+          <p className="eyebrow">Encuesta de satisfacción</p>
+          <h2>Queremos saber cómo estuvo tu visita</h2>
         </div>
         <div className="score-pill">
           {answeredCount}/{questions.length}
@@ -181,7 +181,7 @@ export default function SurveyForm({ initialBranch }) {
         </label>
 
         <label className="field">
-          <span>Telefono</span>
+          <span>Teléfono</span>
           <input
             inputMode="tel"
             maxLength={20}
@@ -240,7 +240,7 @@ export default function SurveyForm({ initialBranch }) {
           <textarea
             maxLength={600}
             onChange={(event) => setComment(event.target.value)}
-            placeholder="Cuentanos que hicimos bien o que podemos mejorar."
+            placeholder="Cuéntanos qué hicimos bien o qué podemos mejorar."
             rows={4}
             value={comment}
           />

@@ -13,7 +13,7 @@ export default async function Home({ searchParams }) {
           <p className="eyebrow">Encuesta de visita</p>
           <h1>{restaurantName}</h1>
           <p className="hero-copy">
-            Comparte tu experiencia y recibe una promocion para tu proxima
+            Comparte tu experiencia y recibe una promoción para tu próxima
             visita.
           </p>
         </div>

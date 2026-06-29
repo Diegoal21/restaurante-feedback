@@ -1,6 +1,6 @@
 # Stromboli Trattoria Feedback
 
-Aplicacion Next.js para encuesta de Stromboli Trattoria con generacion de folios y panel admin.
+Aplicación Next.js para encuesta de Stromboli Trattoria con generación de folios y panel admin.
 
 ## Configuración
 
@@ -23,7 +23,7 @@ npm run dev
 
 Rutas principales:
 
-- `/` encuesta publica. Para QR por mesa usa `/?mesa=12`.
+- `/` encuesta pública. Para QR por sucursal usa `/`.
 - `/admin` panel privado del dueño.
 
 ## Vercel
@@ -34,4 +34,4 @@ Nunca expongas `SUPABASE_SERVICE_ROLE_KEY` en código del navegador.
 
 ## Uso
 
-El cliente responde la encuesta y recibe un folio unico. En `/admin`, el dueño puede revisar estadisticas basicas, buscar folios y marcar un folio como usado.
+El cliente responde la encuesta y recibe un folio único. En `/admin`, el dueño puede revisar estadísticas básicas, buscar folios y marcar un folio como usado.
