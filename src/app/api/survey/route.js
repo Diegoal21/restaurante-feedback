@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
+import { getBranchByQrToken, normalizeQrToken } from "@/lib/branch-qr";
 import { createCouponCode, getExpirationDate } from "@/lib/coupons";
 import { createServiceSupabase } from "@/lib/supabase-server";
 
 const promotionText = "15% de descuento en pizzas, ensaladas o especialidades";
-
-const branches = ["Gómez Farías", "Navarrete", "Hotel Colonial"];
 
 const surveyOptions = {
   how_found: [
@@ -52,13 +51,14 @@ export async function POST(request) {
     const answers = normalizeAnswers(body);
 
     const supabase = createServiceSupabase();
-    const branch = String(body.branch || body.table_number || "").trim();
+    const qrToken = normalizeQrToken(body.qr_token);
+    const branch = getBranchByQrToken(qrToken);
     const contact = String(body.contact || "").trim().slice(0, 30);
     const phoneDigits = contact.replace(/\D/g, "");
 
-    if (!branches.includes(branch)) {
+    if (!branch) {
       return NextResponse.json(
-        { error: "Selecciona una sucursal válida." },
+        { error: "Escanea un QR válido para responder la encuesta." },
         { status: 400 }
       );
     }

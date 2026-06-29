@@ -23,8 +23,14 @@ npm run dev
 
 Rutas principales:
 
-- `/` encuesta pública. Para QR por sucursal usa `/`.
+- `/` muestra un aviso si no se abre desde un QR válido.
+- `/?qr=gf-a9k4mp7xq2rl8vn5tc3zy6` encuesta de Gómez Farías.
+- `/?qr=nv-r8m2qk5zv7xp4tn9la6cd3` encuesta de Navarrete.
+- `/?qr=hc-p6x3va9lt2rq7mk4nz8yw5` encuesta de Hotel Colonial.
 - `/admin` panel privado del dueño.
+
+Para imprimir QR, usa el dominio final de Vercel antes de cada ruta. Ejemplo:
+`https://tu-dominio.vercel.app/?qr=gf-a9k4mp7xq2rl8vn5tc3zy6`.
 
 ## Vercel
 

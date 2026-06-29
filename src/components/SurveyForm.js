@@ -62,11 +62,9 @@ const initialAnswers = questions.reduce((result, question) => {
   return result;
 }, {});
 
-export default function SurveyForm({ initialBranch }) {
+export default function SurveyForm({ initialBranch, qrToken }) {
   const [answers, setAnswers] = useState(initialAnswers);
-  const [branch, setBranch] = useState(
-    branches.includes(initialBranch) ? initialBranch : ""
-  );
+  const branch = branches.includes(initialBranch) ? initialBranch : "";
   const [contact, setContact] = useState("");
   const [comment, setComment] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -87,6 +85,7 @@ export default function SurveyForm({ initialBranch }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           branch: branch.trim(),
+          qr_token: qrToken,
           contact: contact.trim(),
           comment: comment.trim(),
           ...answers,
@@ -165,19 +164,14 @@ export default function SurveyForm({ initialBranch }) {
       <form onSubmit={submitSurvey}>
         <label className="field">
           <span>Sucursal</span>
-          <select
+          <input
             name="branch"
-            onChange={(event) => setBranch(event.target.value)}
+            readOnly
             required
+            type="text"
             value={branch}
-          >
-            <option value="">Selecciona una sucursal</option>
-            {branches.map((branchName) => (
-              <option key={branchName} value={branchName}>
-                {branchName}
-              </option>
-            ))}
-          </select>
+          />
+          <small>Esta sucursal se detecta automáticamente desde el QR.</small>
         </label>
 
         <label className="field">
